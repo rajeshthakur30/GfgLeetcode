@@ -3,32 +3,34 @@
 using namespace std;
 
 int main() {
-    int n, m;
-    cout << "Enter number of packets: ";
+    int n;
+    cout << "Enter number of intervals: ";
     cin >> n;
 
-    int a[n];
-    cout << "Enter chocolates in packets:\n";
-    for (int i = 0; i < n; i++)
-        cin >> a[i];
+    int start[n], end[n];
 
-    cout << "Enter number of students: ";
-    cin >> m;
-
-    if (m > n) {
-        cout << "Distribution not possible";
-        return 0;
+    cout << "Enter start and end of intervals:\n";
+    for(int i = 0; i < n; i++) {
+        cin >> start[i] >> end[i];
     }
 
-    sort(a, a + n);
+    sort(start, start + n);
+    sort(end, end + n);
 
-    int diff = a[m-1] - a[0];
-    for (int i = 1; i <= n - m; i++) {
-        int curr = a[i+m-1] - a[i];
-        if (curr < diff)
-            diff = curr;
+    int i = 0, j = 0;
+    int overlap = 0, maxOverlap = 0;
+
+    while(i < n && j < n) {
+        if(start[i] <= end[j]) {
+            overlap++;
+            maxOverlap = max(maxOverlap, overlap);
+            i++;
+        } else {
+            overlap--;
+            j++;
+        }
     }
 
-    cout << "Minimum difference: " << diff;
+    cout << "Maximum overlapping intervals: " << maxOverlap;
     return 0;
 }
